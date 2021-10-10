@@ -1,5 +1,13 @@
 <template>
-  <div class="monaco-container" ref="container">
+  <div
+    class="monaco-container"
+    ref="container"
+    @keydown.ctrl.83.prevent.stop="
+      () => {
+        $emit('run');
+      }
+    "
+  >
     <div class="monaco-frame">
       <div class="monaco-frame-header">
         <div class="controls">
@@ -7,7 +15,7 @@
           <div class="control minimize"></div>
           <div class="control maximize"></div>
         </div>
-        <div class="title">editor.exe</div>
+        <div class="title">{{ headerName }}</div>
       </div>
     </div>
     <MonacoEditor
@@ -31,6 +39,10 @@ export default {
   },
   props: {
     value: {
+      type: String,
+      required: true
+    },
+    headerName: {
       type: String,
       required: true
     },
@@ -72,13 +84,16 @@ export default {
     }).observe(this.$refs.container);
 
     this.cCode = this.value;
-
-
-     monaco.editor.defineTheme("naisuTheme", {
+  },
+  methods: {
+    editorMounted(editor) {
+      this.editor = editor;
+      monaco.editor.defineTheme("naisuTheme", {
         base: "hc-black", // can also be vs-dark or hc-black
         inherit: true, // can also be false to completely replace the builtin rules
         colors: {
-          "editor.background": "#00000055"
+          "editor.background": "#00000050",
+          "minimap.background": "#FF0000"
         },
         rules: [
           {
@@ -91,14 +106,9 @@ export default {
         ]
       });
       monaco.editor.setTheme("naisuTheme");
-      console.log(monaco.editor)
-  },
-  methods: {
-    editorMounted(editor) {
-      this.editor = editor;
 
       this.editor.onDidChangeModelContent(e => {
-        this.$emit("update", this.cCode);
+        this.$emit("input", this.cCode);
       });
     }
   }
@@ -106,17 +116,28 @@ export default {
 </script>
 
 <style scoped>
+* {
+  overflow: hidden;
+}
+.monaco-editor {
+  border-radius: 30px;
+}
+.editor {
+  height: 550px;
+  border-radius: 0px 0px 10px 10px;
+}
 .monaco-container {
+  backdrop-filter: blur(4px);
+
   /* background: linear-gradient(140deg, rgb(76, 200, 200), rgb(32, 32, 51)); */
   /* background: linear-gradient(150deg, #00d2ff 0%, #3a47d5 100%);; */
-  padding:20px;
-  padding-top:0px ;
+  padding: 0px 15px 20px 15px;
 }
 .monaco-frame {
   position: relative;
   height: 100%;
   width: 100%;
-  background-color: #000000cc;
+  background-color: #000000aa;
   border-radius: 12px 12px 0px 0px;
   padding: 16px;
   transform-style: preserve-3d;
@@ -142,9 +163,6 @@ export default {
   text-align: center;
   color: white;
 }
-.editor {
-  border-radius: 0px 0px 10px 10px;
-}
 .editor-header {
   height: 50px;
   max-width: 300px;
@@ -156,8 +174,5 @@ export default {
   box-shadow: -5px 7px 0px 1px rgba(0, 0, 0, 1);
   -webkit-box-shadow: -5px 7px 0px 1px rgba(0, 0, 0, 1);
   -moz-box-shadow: -5px 7px 0px 1px rgba(0, 0, 0, 1);
-}
-.monaco-editor-background{
-  backdrop-filter: blur(4px);
 }
 </style>

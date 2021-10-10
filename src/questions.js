@@ -5,8 +5,8 @@ const questions = [
         desc: 'Given an array (or string), the task is to reverse the array/string.',
         diffLevel: 'ez',
         testCases: [{
-            input: '{1, 2, 3}',
-            output: '{3, 2, 1}',
+            input: '{ 1, 2, 3 }',
+            output: '{ 3, 2, 1 }',
             hidden: false
         }]
     },
@@ -16,7 +16,7 @@ const questions = [
         desc: 'Write a function to return minimum and maximum in an array. Your program should make the minimum number of comparisons',
         diffLevel: 'ez',
         testCases: [{
-            input: '{1000, 11, 445, 1, 330, 3000}',
+            input: '{ 1000, 11, 445, 1, 330, 3000 }',
             output: '1, 3000',
             hidden: false
         }]
@@ -29,12 +29,12 @@ const questions = [
         diffLevel: 'med',
         testCases: [
             {
-                input: '{ 7, 10, 4, 3, 20, 15}, {3}',
+                input: '{ 7, 10, 4, 3, 20, 15 }, { 3 }',
                 output: '1, 3000',
                 hidden: false
             },
             {
-                input: '{ 7, 10, 4, 20, 15}, {4}',
+                input: '{ 7, 10, 4, 20, 15 }, { 4 }',
                 output: '15',
                 hidden: false
             }

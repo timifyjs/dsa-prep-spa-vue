@@ -2,144 +2,152 @@
   <div class="container">
     <q-splitter v-model="splitterModelX" style="height:90vh">
       <template v-slot:before>
-        <q-btn icon="undo" color="primary" @click="questionNum--" />
-        <q-btn icon="forward" color="primary" @click="questionNum++" />
-        <!-- <CustomEditor
+        <q-scroll-area
+          :thumb-style="thumbStyle"
+          :bar-style="barStyle"
+          style="width: 100%; height:100%"
+        >
+          <q-btn icon="arrow_back_ios" color="primary" @click="questionNum--" />
+          <q-btn
+            icon="arrow_forward_ios"
+            color="primary"
+            @click="questionNum++"
+          />
+          <!-- <CustomEditor
           class="custom"
           :theme="selectedTheme"
           v-model="code"
           height="250px"
           @update="e => (code = e)"
         /> -->
-
-        <div>
-          <h3>
-            #{{ questions[questionNum].num }}.
-            {{ questions[questionNum].title }}
-          </h3>
-          <h5>Difficulty: {{ questions[questionNum].diffLevel }}</h5>
-          <h4>{{ questions[questionNum].desc }}</h4>
-
-          <q-btn label="run" @click="isLoading = !isLoading" />
-        </div>
+          <div class="left-section">
+            <h4 style="margin-top:0px">
+              #{{ questions[questionNum].num }}.
+              {{ questions[questionNum].title }}
+            </h4>
+            <QuestionStats
+              :diffLevel="questions[questionNum].diffLevel"
+              :likes="32"
+              :dislikes="23"
+              :isFav="true"
+            />
+            <h5>{{ questions[questionNum].desc }}</h5>
+            <div
+              v-for="(testCase, index) in questions[questionNum].testCases"
+              :key="index"
+            >
+              <div style="font-size:30px; margin-top:20px">
+                Example: {{ index + 1 }}
+              </div>
+              <Example :testCase="testCase" />
+            </div>
+            <q-btn label="run" @click="isLoading = !isLoading" />
+          </div>
+        </q-scroll-area>
       </template>
       <template v-slot:after>
         <div ref="editors" class="editors">
-          <q-splitter horizontal v-model="splitterModelY">
-            <template v-slot:before>
-              <div
-                style=" display:flex; flex-direction:row; justify-content:space-between; margin-top:10px"
-              >
-                <!-- <q-select
+          <div
+            style=" display:flex; flex-direction:row; justify-content:space-between; margin-top:10px"
+          >
+            <!-- <q-select
                   style="width:100px"
                   label="Language"
                   :options="langOptions"
                   v-model="selectedLang"
                 /> -->
-                <!-- <q-select
+            <!-- <q-select
                   style="width:100px;"
                   label="Theme"
                   :options="themeOptions"
                   v-model="selectedTheme"
                   @input="setTheme"
                 /> -->
-                <q-btn icon="light_mode" style="color:white">
-                  <q-menu transition-show="jump-down" transition-hide="jump-up">
-                    <q-list style="max-width:100px">
-                      <q-item clickable v-close-popup @click="setTheme('vs')">
-                        <q-item-section>
-                          <q-item-label>vs</q-item-label>
-                        </q-item-section>
-                      </q-item>
-                      <q-item
-                        clickable
-                        v-close-popup
-                        @click="setTheme('vs-dark')"
-                      >
-                        <q-item-section>
-                          <q-item-label>vs-dark</q-item-label>
-                        </q-item-section>
-                      </q-item>
-                      <q-item
-                        clickable
-                        v-close-popup
-                        @click="setTheme('hc-black')"
-                      >
-                        <q-item-section>
-                          <q-item-label>hc-black</q-item-label>
-                        </q-item-section>
-                      </q-item>
-                    </q-list>
-                  </q-menu>
-                </q-btn>
+            <q-btn icon="light_mode" style="color:white">
+              <q-menu transition-show="jump-down" transition-hide="jump-up">
+                <q-list style="max-width:100px">
+                  <q-item
+                    clickable
+                    v-close-popup
+                    @click="setTheme('naisuTheme')"
+                  >
+                    <q-item-section>
+                      <q-item-label>naisu</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item clickable v-close-popup @click="setTheme('vs')">
+                    <q-item-section>
+                      <q-item-label>vs</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item clickable v-close-popup @click="setTheme('vs-dark')">
+                    <q-item-section>
+                      <q-item-label>vs-dark</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item clickable v-close-popup @click="setTheme('hc-black')">
+                    <q-item-section>
+                      <q-item-label>hc-black</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
 
-                <q-btn>
-                  <img :src="langLogos[selectedLang]" style="width:50px" />
-                  <q-menu transition-show="jump-down" transition-hide="jump-up">
-                    <q-list style="max-width:100px">
-                      <q-item
-                        clickable
-                        v-close-popup
-                        @click="changeLang('cpp')"
-                      >
-                        <q-item-section>
-                          <img src="../assets/cpp.svg" style="width:50px" />
-                        </q-item-section>
-                      </q-item>
+            <q-btn>
+              <img :src="langLogos[selectedLang]" style="width:50px" />
+              <q-menu transition-show="jump-down" transition-hide="jump-up">
+                <q-list style="max-width:100px">
+                  <q-item clickable v-close-popup @click="changeLang('cpp')">
+                    <q-item-section>
+                      <img src="../assets/cpp.svg" style="width:50px" />
+                    </q-item-section>
+                  </q-item>
 
-                      <q-item clickable v-close-popup @click="changeLang('c')">
-                        <q-item-section>
-                          <img src="../assets/c.svg" style="width:50px" />
-                        </q-item-section>
-                      </q-item>
+                  <q-item clickable v-close-popup @click="changeLang('c')">
+                    <q-item-section>
+                      <img src="../assets/c.svg" style="width:50px" />
+                    </q-item-section>
+                  </q-item>
 
-                      <q-item clickable v-close-popup @click="changeLang('js')">
-                        <q-item-section>
-                          <img
-                            src="../assets/javascript.svg"
-                            style="width:50px"
-                          />
-                        </q-item-section>
-                      </q-item>
+                  <q-item clickable v-close-popup @click="changeLang('js')">
+                    <q-item-section>
+                      <img src="../assets/javascript.svg" style="width:50px" />
+                    </q-item-section>
+                  </q-item>
 
-                      <q-item
-                        clickable
-                        v-close-popup
-                        @click="changeLang('python')"
-                      >
-                        <q-item-section>
-                          <img src="../assets/python.svg" style="width:50px" />
-                        </q-item-section>
-                      </q-item>
+                  <q-item clickable v-close-popup @click="changeLang('python')">
+                    <q-item-section>
+                      <img src="../assets/python.svg" style="width:50px" />
+                    </q-item-section>
+                  </q-item>
 
-                      <q-item
-                        clickable
-                        v-close-popup
-                        @click="changeLang('java')"
-                      >
-                        <q-item-section>
-                          <img src="../assets/java.svg" style="width:50px" />
-                        </q-item-section>
-                      </q-item>
-                    </q-list>
-                  </q-menu>
-                </q-btn>
+                  <q-item clickable v-close-popup @click="changeLang('java')">
+                    <q-item-section>
+                      <img src="../assets/java.svg" style="width:50px" />
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
+          </div>
+          <div style="position:relative">
+            <transition name="blur-fade">
+              <div class="loading" v-if="isLoading">
+                <q-spinner-tail color="primary" size="5em" />
+                <q-tooltip :offset="[0, 8]">compiling...</q-tooltip>
               </div>
-              <div>
-                <transition name="blur-fade">
-                  <div class="loading" v-if="isLoading">
-                    <q-spinner-tail color="primary" size="5em" />
-                    <q-tooltip :offset="[0, 8]">compiling...</q-tooltip>
-                  </div>
-                </transition>
-                  <CustomEditor
-                  v-model="code"
-                  height="550px"
-                  :theme="selectedTheme"
-                  :language="selectedLang"
-                />
-                <!-- <div class="editor-header">Editor</div> -->
-                <!-- <div class="monaco-container">
+            </transition>
+            <CustomEditor
+              header-name="editor.exe"
+              v-model="code"
+              height="450px"
+              :theme="selectedTheme"
+              :language="selectedLang"
+              @run="run"
+            />
+            <!-- <div class="editor-header">Editor</div> -->
+            <!-- <div class="monaco-container">
                   <div class="monaco-frame">
                     <div class="monaco-frame-header">
                       <div class="controls">
@@ -159,18 +167,17 @@
                     @editorDidMount="editorMounted"
                   />
                 </div> -->
-                <!-- <CustomEditor v-model="editorConfig" /> -->
-                <q-btn
-                  round
-                  icon="play_arrow"
-                  color="green"
-                  size="lg"
-                  style="position:absolute; bottom:50px; right: 80px"
-                  @click="run"
-                />
-              </div>
-            </template>
-            <!-- <template v-slot:separator>
+            <!-- <CustomEditor v-model="editorConfig" /> -->
+            <q-btn
+              round
+              icon="play_arrow"
+              color="green"
+              size="lg"
+              style="position:absolute; bottom:50px; right: 80px"
+              @click="run"
+            />
+          </div>
+          <!-- <template v-slot:separator>
               <q-avatar
                 color="primary"
                 text-color="white"
@@ -178,23 +185,24 @@
                 icon="drag_indicator"
               />
             </template> -->
-            <template v-slot:after>
-              <div>
-                <transition name="blur-fade">
-                  <div class="loading" v-if="isLoading">
-                    <q-spinner-tail color="primary" size="5em" />
-                    <q-tooltip :offset="[0, 8]">compiling...</q-tooltip>
-                  </div>
-                </transition>
-                <CustomEditor
-                  v-model="output"
-                  height="250px"
-                  readOnly
-                  :theme="selectedTheme"
-                  :language="selectedLang"
-                />
-                <!-- <div class="console-header">Console</div> -->
-                <!-- <div class="monaco-container">
+          <div style="position:relative">
+            <transition name="blur-fade">
+              <div class="loading" v-if="isLoading">
+                <q-spinner-tail color="primary" size="5em" />
+                <q-tooltip :offset="[0, 8]">compiling...</q-tooltip>
+              </div>
+            </transition>
+            <CustomEditor
+              header-name="console.exe"
+              :key="output"
+              v-model="output"
+              height="200px"
+              readOnly
+              :theme="selectedTheme"
+              :language="selectedLang"
+            />
+            <!-- <div class="console-header">Console</div> -->
+            <!-- <div class="monaco-container">
                   <div class="monaco-frame">
                     <div class="monaco-frame-header">
                       <div class="controls">
@@ -215,9 +223,7 @@
                     @editorDidMount="editorMounted"
                   />
                 </div> -->
-              </div>
-            </template>
-          </q-splitter>
+          </div>
         </div>
       </template>
     </q-splitter>
@@ -226,6 +232,7 @@
 
 <script>
 import axios from "axios";
+// import MonacoEditor from 'vue-monaco'
 
 import cLogo from "../assets/c.svg";
 import cppLogo from "../assets/cpp.svg";
@@ -236,10 +243,15 @@ import pythonLogo from "../assets/python.svg";
 import questions from "../questions";
 
 import CustomEditor from "../components/CustomEditor.vue";
+import QuestionStats from "../components/QuestionStats.vue";
+import Example from "../components/Example.vue";
 
 export default {
   components: {
-    CustomEditor
+    CustomEditor,
+    QuestionStats,
+    Example
+    // MonacoEditor
   },
 
   data() {
@@ -252,7 +264,7 @@ export default {
         js: jsLogo
       },
       questions: questions,
-      questionNum: 0,
+      questionNum: 2,
       splitterModelX: 50,
       splitterModelY: 70,
       editors: [],
@@ -270,9 +282,31 @@ return 0;
       selectedTheme: "hc-black",
 
       isLoading: false,
-      output: '',
+      output: "",
+
+      thumbStyle: {
+        right: "4px",
+        borderRadius: "4px",
+        backgroundColor: "#027be3",
+        width: "15px",
+        opacity: 0.75
+      },
+
+      barStyle: {
+        right: "2px",
+        borderRadius: "4px",
+        backgroundColor: "#027be3",
+        width: "15px",
+        opacity: 0.2
+      },
+
       RO: null
     };
+  },
+  watch: {
+    code() {
+      console.log(this.code);
+    }
   },
   mounted() {
     // literally took 3h to find out about ResizeOberver
@@ -294,24 +328,6 @@ return 0;
       editor.onDidPaste(() => {
         console.log("what did you paste 👀");
       });
-
-      monaco.editor.defineTheme("naisuTheme", {
-        base: "hc-black", // can also be vs-dark or hc-black
-        inherit: true, // can also be false to completely replace the builtin rules
-        colors: {
-          "editor.background": "#00000055"
-        },
-        rules: [
-          {
-            token: "comment",
-            foreground: "ffa500",
-            fontStyle: "italic underline"
-          },
-          { token: "comment.js", foreground: "008800", fontStyle: "bold" },
-          { token: "comment.css", foreground: "0000ff" } // will inherit fontStyle from `comment` above
-        ]
-      });
-      monaco.editor.setTheme("naisuTheme");
     },
     setTheme(theme) {
       this.selectedTheme = theme;
@@ -321,7 +337,9 @@ return 0;
       // this.isLoading = !this.isLoading;
       this.output = "";
       this.isLoading = true;
-      // axios.post('http://localhost:3000/', { code: this.code, lang:this.selectedLang }).then((res) => {
+      // axios.post('http://localhost:3000/', { 
+      //   code: this.code, lang:this.selectedLang })
+      // .then((res) => {
       axios
         .post("https://compiler.plasmatch.in/", {
           code: this.code,
@@ -338,14 +356,8 @@ return 0;
 </script>
 
 <style scoped>
-* {
-  overflow: hidden;
-}
 .container {
-  background-image: url("../assets/animated-bg.svg");
-  background-repeat: no-repeat;
-  background-size: 1920px 1080px;
-  position: absolute;
+  color: white;
 }
 .row {
   width: 100vw;
@@ -357,15 +369,11 @@ return 0;
   flex: 2;
   justify-content: center;
 }
-.editors {
-  overflow: hidden;
+.left-section {
+  padding: 20px;
 }
-.editor {
-  height: 550px;
-  border-radius: 0px 0px 10px 10px;
-}
+
 .console {
-  overflow: hidden;
   border-radius: 0px 0px 10px 10px;
 }
 .options {
