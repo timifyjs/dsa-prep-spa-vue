@@ -200,6 +200,7 @@
               readOnly
               :theme="selectedTheme"
               :language="selectedLang"
+              :headerColor="output.length >= 1 ? 'green' : 'red'"
             />
             <!-- <div class="console-header">Console</div> -->
             <!-- <div class="monaco-container">
@@ -268,12 +269,45 @@ export default {
       splitterModelX: 50,
       splitterModelY: 70,
       editors: [],
-      code: `#include<stdio.h>
-int main(){
-for(int i=0;i<10;i++){
-  printf("%d, ",i);
+      code: `#include <stdio.h>
+// Function to find the minimum and
+// maximum element of the array
+void findMinimumMaximum(int arr[], int n)
+{
+    int i;
+    // variable to store the minimum
+    // and maximum element
+    int min = arr[0], max = arr[0];
+    // Traverse the given array
+    for (i = 0; i < n; i++)
+    {
+        // If current element is smaller
+        // than min then update it
+        if (arr[i] < min)
+        {
+            min = arr[i];
+        }
+        // If current element is greater
+        // than max then update it
+        if (arr[i] > max)
+        {
+            max = arr[i];
+        }
+    }
+    // Print the minimum and maximum element
+    printf("%d %d", min, max);
 }
-return 0;
+int main()
+{
+    // Given array
+    int arr[10];
+    int n,i;
+    scanf("%d", &n);
+    for(i=0; i<n; i++)
+        scanf("%d", &arr[i]);
+    // Function call
+    findMinimumMaximum(arr, n);
+    return 0;
 }`,
       langOptions: ["c", "cpp", "python", "java", "javascript"],
       selectedLang: "c",
@@ -303,11 +337,6 @@ return 0;
       RO: null
     };
   },
-  watch: {
-    code() {
-      console.log(this.code);
-    }
-  },
   mounted() {
     // literally took 3h to find out about ResizeOberver
     this.RO = new ResizeObserver(() => {
@@ -334,21 +363,26 @@ return 0;
       monaco.editor.setTheme(this.selectedTheme);
     },
     run() {
-      // this.isLoading = !this.isLoading;
       this.output = "";
       this.isLoading = true;
-      // axios.post('http://localhost:3000/', { 
-      //   code: this.code, lang:this.selectedLang })
-      // .then((res) => {
       axios
         .post("https://compiler.plasmatch.in/", {
+        // .post("http://localhost:3333/", {
           code: this.code,
-          lang: this.selectedLang
+          lang: this.selectedLang,
+          qNo: this.questionNum
         })
         .then(res => {
           this.output = res.data.stdout || res.data.stderr;
           this.isLoading = false;
           console.log(res);
+          console.log(
+            this.output == this.questions[this.questionNum].testCases[1].output
+          );
+          console.log(
+            this.output,
+            this.questions[this.questionNum].testCases[1].output
+          );
         });
     }
   }

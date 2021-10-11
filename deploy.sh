@@ -11,6 +11,6 @@ git status
 git add .
 
 git status
-git commit -m 'Add naisu Theme'
+git commit -m 'Correct page title and description'
 #git pull origin gh-pages --allow-unrelated-histories
 git push origin gh-pages --force

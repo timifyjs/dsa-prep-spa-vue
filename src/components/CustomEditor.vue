@@ -8,7 +8,7 @@
       }
     "
   >
-    <div class="monaco-frame">
+    <div class="monaco-frame" :style="`background:${headerColor}`">
       <div class="monaco-frame-header">
         <div class="controls">
           <div class="control close"></div>
@@ -64,11 +64,16 @@ export default {
     },
     fontSize: {
       type: Number,
-      default: 20
+      default: 18
     },
     readOnly: {
       type: Boolean,
       default: false
+    },
+    headerColor: {
+      type: String,
+      required: false,
+      default:'#000000aa'
     }
   },
   data() {
@@ -125,10 +130,11 @@ export default {
 .editor {
   height: 550px;
   border-radius: 0px 0px 10px 10px;
+  /* border: 1px solid rgba(255, 255, 255, 0.125);
+  border-top: 0px; */
 }
 .monaco-container {
   backdrop-filter: blur(4px);
-
   /* background: linear-gradient(140deg, rgb(76, 200, 200), rgb(32, 32, 51)); */
   /* background: linear-gradient(150deg, #00d2ff 0%, #3a47d5 100%);; */
   padding: 0px 15px 20px 15px;
@@ -140,7 +146,8 @@ export default {
   background-color: #000000aa;
   border-radius: 12px 12px 0px 0px;
   padding: 16px;
-  transform-style: preserve-3d;
+  /* border: 1px solid rgba(255, 255, 255, 0.25);
+  border-bottom: 0px; */
 }
 .monaco-frame-header {
   display: grid;
