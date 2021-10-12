@@ -7,11 +7,15 @@
           :bar-style="barStyle"
           style="width: 100%; height:100%"
         >
-          <q-btn icon="arrow_back_ios" color="primary" @click="questionNum--" />
+          <q-btn
+            icon="arrow_back_ios"
+            color="primary"
+            @click="changeQuestion(-1)"
+          />
           <q-btn
             icon="arrow_forward_ios"
             color="primary"
-            @click="questionNum++"
+            @click="changeQuestion(1)"
           />
           <!-- <CustomEditor
           class="custom"
@@ -144,6 +148,7 @@
               height="450px"
               :theme="selectedTheme"
               :language="selectedLang"
+              :key="questionNum"
               @run="run"
             />
             <!-- <div class="editor-header">Editor</div> -->
@@ -265,50 +270,11 @@ export default {
         js: jsLogo
       },
       questions: questions,
-      questionNum: 2,
+      questionNum: 5,
       splitterModelX: 50,
       splitterModelY: 70,
       editors: [],
-      code: `#include <stdio.h>
-// Function to find the minimum and
-// maximum element of the array
-void findMinimumMaximum(int arr[], int n)
-{
-    int i;
-    // variable to store the minimum
-    // and maximum element
-    int min = arr[0], max = arr[0];
-    // Traverse the given array
-    for (i = 0; i < n; i++)
-    {
-        // If current element is smaller
-        // than min then update it
-        if (arr[i] < min)
-        {
-            min = arr[i];
-        }
-        // If current element is greater
-        // than max then update it
-        if (arr[i] > max)
-        {
-            max = arr[i];
-        }
-    }
-    // Print the minimum and maximum element
-    printf("%d %d", min, max);
-}
-int main()
-{
-    // Given array
-    int arr[10];
-    int n,i;
-    scanf("%d", &n);
-    for(i=0; i<n; i++)
-        scanf("%d", &arr[i]);
-    // Function call
-    findMinimumMaximum(arr, n);
-    return 0;
-}`,
+      code: "",
       langOptions: ["c", "cpp", "python", "java", "javascript"],
       selectedLang: "c",
 
@@ -337,6 +303,16 @@ int main()
       RO: null
     };
   },
+  watch: {
+    questionNum() {
+      if (this.questions[this.questionNum].hint) {
+        this.code = this.questions[this.questionNum].hint;
+      }
+    }
+  },
+  beforeMount() {
+    this.code = this.questions[this.questionNum].hint;
+  },
   mounted() {
     // literally took 3h to find out about ResizeOberver
     this.RO = new ResizeObserver(() => {
@@ -352,6 +328,15 @@ int main()
     changeLang(lang) {
       this.selectedLang = lang;
     },
+    changeQuestion(val) {
+      if (val == 1) {
+        this.questionNum++;
+      } else {
+        this.questionNum--;
+      }
+      if (this.questions[this.questionNum].hint)
+        this.code = this.questions[this.questionNum].hint;
+    },
     editorMounted(editor) {
       this.editors.push(editor);
       editor.onDidPaste(() => {
@@ -366,25 +351,27 @@ int main()
       this.output = "";
       this.isLoading = true;
       axios
-        .post("https://compiler.plasmatch.in/", {
-        // .post("http://localhost:3333/", {
+        // .post("https://compiler.plasmatch.in/", {
+        .post("http://localhost:3333/", {
           code: this.code,
           lang: this.selectedLang,
           qNo: this.questionNum
         })
         .then(res => {
-          this.output = res.data.stdout || res.data.stderr;
+          // this.output = res.data.stdout || res.data.stderr || "";
+          this.output = JSON.stringify(res.data);
+          this.output = `tests passed: ${res.data.passedCount}/${res.data.totalCount}\n`
+          let testCases = res.data.tests
+          testCases.forEach((test,index)=>{
+            this.output += `test #${index+1}\ninput : ${test.input}\nexpected\noutput: ${test.expout}
+output: ${test.stdout}\n${test.passed? 'Passed ✅':'Failed ❌'}\n\n`
+          })
           this.isLoading = false;
-          console.log(res);
-          console.log(
-            this.output == this.questions[this.questionNum].testCases[1].output
-          );
-          console.log(
-            this.output,
-            this.questions[this.questionNum].testCases[1].output
-          );
+          console.log(testCases);
         });
-    }
+      this.updateConsole();
+    },
+    updateConsole() {}
   }
 };
 </script>

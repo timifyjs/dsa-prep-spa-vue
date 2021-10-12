@@ -6,7 +6,7 @@
       <div>Output:</div>
       <div style="padding-left:20px">{{ testCase.output }}</div>
       <div v-if="testCase.explaination">Explaination:</div>
-      <div>{{ testCase.explaination }}</div>
+      <div style="padding-left:20px">{{ testCase.explaination }}</div>
     </div>
   </div>
 </template>

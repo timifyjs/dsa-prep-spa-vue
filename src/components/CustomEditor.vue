@@ -8,7 +8,7 @@
       }
     "
   >
-    <div class="monaco-frame" :style="`background:${headerColor}`">
+    <div class="monaco-frame">
       <div class="monaco-frame-header">
         <div class="controls">
           <div class="control close"></div>

@@ -14,6 +14,11 @@
       size="sm"
       :name="isFav ? 'favorite' : 'favorite_border'"
     />
+        <q-icon
+      :color="isBookmarked ? 'pink' : 'white'"
+      size="sm"
+      :name="isFav ? 'bookmark' : 'bookmark_border'"
+    />
   </div>
 </template>
 
@@ -35,6 +40,11 @@ export default {
     isFav: {
       type: Boolean,
       required: true
+    },
+    isBookmarked:{
+      type: Boolean,
+      required: false,
+      default:false,
     }
   },
   data() {
