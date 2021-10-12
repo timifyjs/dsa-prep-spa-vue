@@ -1,8 +1,8 @@
 {
   "name": "dsa-prep-spa",
   "version": "0.0.1",
-  "description": "A Quasar Framework app",
-  "productName": "Quasar App",
+  "description": "Practice DSA app",
+  "productName": "Practice DSA!",
   "author": "Naresh <naresh.khatri2345@gmail.com>",
   "private": true,
   "scripts": {
