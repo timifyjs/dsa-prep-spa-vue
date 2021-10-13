@@ -14,10 +14,15 @@
       size="sm"
       :name="isFav ? 'favorite' : 'favorite_border'"
     />
-        <q-icon
+    <q-icon
       :color="isBookmarked ? 'pink' : 'white'"
       size="sm"
       :name="isFav ? 'bookmark' : 'bookmark_border'"
+    />
+      <q-icon
+      :color="isBookmarked ? 'pink' : 'white'"
+      size="sm"
+      :name="isFav ? 'star' : 'star_border'"
     />
   </div>
 </template>
@@ -41,10 +46,10 @@ export default {
       type: Boolean,
       required: true
     },
-    isBookmarked:{
+    isBookmarked: {
       type: Boolean,
       required: false,
-      default:false,
+      default: false
     }
   },
   data() {
@@ -55,11 +60,9 @@ export default {
 
 <style scoped>
 .container {
-    width: 300px;
+  width: 300px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-.diffLevel {
 }
 </style>

@@ -1,14 +1,6 @@
 <template>
-  <div
-    class="monaco-container"
-    ref="container"
-    @keydown.ctrl.83.prevent.stop="
-      () => {
-        $emit('run');
-      }
-    "
-  >
-    <div class="monaco-frame">
+  <div class="monaco-container" ref="container">
+    <div class="monaco-frame" @click="handleExpandBtn">
       <div class="monaco-frame-header">
         <div class="controls">
           <div class="control close"></div>
@@ -16,16 +8,37 @@
           <div class="control maximize"></div>
         </div>
         <div class="title">{{ headerName }}</div>
+        <div>
+          <transition name="fade" mode="out-in">
+            <q-btn
+              flat
+              v-if="consoleExpanded"
+              round
+              key="1"
+              icon="expand_more"
+            />
+            <q-btn flat round key="2" v-else icon="expand_less" />
+          </transition>
+        </div>
       </div>
     </div>
-    <MonacoEditor
-      class="editor"
-      :theme="theme"
-      v-model="cCode"
-      :options="{ fontSize: fontSize, readOnly: readOnly }"
-      :language="language"
-      @editorDidMount="editorMounted"
-    />
+    <q-slide-transition :duration='200' appear >
+      <div v-show="consoleExpanded">
+        <MonacoEditor
+          class="editor"
+          :theme="theme"
+          :style="`height:${cHeight}`"
+          v-model="cCode"
+          :options="{
+            fontSize: fontSize,
+            readOnly: true,
+            minimap: { enabled: false }
+          }"
+          :key="cHeight"
+          @editorDidMount="editorMounted"
+        />
+      </div>
+    </q-slide-transition>
   </div>
 </template>
 
@@ -45,11 +58,11 @@ export default {
       type: String,
       required: true
     },
-    theme: {
+    height: {
       type: String,
       required: true
     },
-    language: {
+    theme: {
       type: String,
       required: true
     },
@@ -61,20 +74,18 @@ export default {
       type: Number,
       default: 18
     },
-    readOnly: {
-      type: Boolean,
-      default: false
-    },
     headerColor: {
       type: String,
       required: false,
-      default:'#000000aa'
+      default: "#000000aa"
     }
   },
   data() {
     return {
       cCode: "",
-      editor: null
+      cHeight: null,
+      editor: null,
+      consoleExpanded: true
     };
   },
   mounted() {
@@ -84,10 +95,12 @@ export default {
     }).observe(this.$refs.container);
 
     this.cCode = this.value;
+    this.cHeight = this.height;
   },
   methods: {
     editorMounted(editor) {
       this.editor = editor;
+      this.editor.minimap = { enabled: false };
       monaco.editor.defineTheme("naisuTheme", {
         base: "hc-black", // can also be vs-dark or hc-black
         inherit: true, // can also be false to completely replace the builtin rules
@@ -106,10 +119,16 @@ export default {
         ]
       });
       monaco.editor.setTheme("naisuTheme");
-
-      this.editor.onDidChangeModelContent(e => {
-        this.$emit("input", this.cCode);
-      });
+    },
+    handleExpandBtn() {
+      this.consoleExpanded = !this.consoleExpanded;
+      if (this.consoleExpanded) {
+        this.cHeight = 200;
+        this.$emit("expanded", true);
+      } else {
+        this.cHeight = 0;
+        this.$emit("expanded", false);
+      }
     }
   }
 };
@@ -123,15 +142,16 @@ export default {
   border-radius: 30px;
 }
 .editor {
-  height: calc(100% - 45px);
+  height: 200px;
   border-radius: 0px 0px 10px 10px;
   /* border: 1px solid rgba(255, 255, 255, 0.125);
   border-top: 0px; */
 }
-.monaco-container{
+.monaco-container {
   backdrop-filter: blur(4px);
   padding: 0px 15px;
-  height: 100%;
+  /* background: linear-gradient(140deg, rgb(76, 200, 200), rgb(32, 32, 51)); */
+  /* background: linear-gradient(150deg, #00d2ff 0%, #3a47d5 100%);; */
 }
 .monaco-frame {
   position: relative;
@@ -144,18 +164,12 @@ export default {
   /* border: 1px solid rgba(255, 255, 255, 0.25);
   border-bottom: 0px; */
 }
-
 .monaco-frame-header {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0px 16px;
-}
-.monaco-frame-header {
-  display: grid;
-  grid-template-columns: 60px auto 60px;
-  height: 15px;
 }
 
 .controls {
@@ -184,5 +198,30 @@ export default {
   box-shadow: -5px 7px 0px 1px rgba(0, 0, 0, 1);
   -webkit-box-shadow: -5px 7px 0px 1px rgba(0, 0, 0, 1);
   -moz-box-shadow: -5px 7px 0px 1px rgba(0, 0, 0, 1);
+}
+
+/* .rotate-enter,
+.rotate-leave-to {
+  transform: rotate(90deg);
+}
+.rotate-enter-to,
+.rotate-leave {
+  transform: rotate(-90deg);
+}
+.rotate-enter-active,
+.rotate-leave-active {
+  transition: all 0.5s ease;
+} */
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.2s;
+}
+.fade-enter {
+  opacity: 0;
+  transform: rotate(-90deg);
+}
+.fade-leave-to {
+  opacity: 0;
+  transform: rotate(90deg);
 }
 </style>

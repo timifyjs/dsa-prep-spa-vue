@@ -29,6 +29,7 @@
               #{{ questions[questionNum].num }}.
               {{ questions[questionNum].title }}
             </h4>
+            <!-- <q-separator color="white" /> -->
             <QuestionStats
               :diffLevel="questions[questionNum].diffLevel"
               :likes="32"
@@ -50,92 +51,115 @@
         </q-scroll-area>
       </template>
       <template v-slot:after>
-        <div ref="editors" class="editors">
-          <div
-            style=" display:flex; flex-direction:row; justify-content:space-between; margin-top:10px"
-          >
-            <!-- <q-select
+        <div
+          style=" display:flex; 
+          flex-direction:row;
+          justify-content:space-between;
+          margin-top:10px
+          max-height:45px"
+        >
+          <!-- <q-select
                   style="width:100px"
                   label="Language"
                   :options="langOptions"
                   v-model="selectedLang"
                 /> -->
-            <!-- <q-select
+          <!-- <q-select
                   style="width:100px;"
                   label="Theme"
                   :options="themeOptions"
                   v-model="selectedTheme"
                   @input="setTheme"
                 /> -->
-            <q-btn icon="light_mode" style="color:white">
-              <q-menu transition-show="jump-down" transition-hide="jump-up">
-                <q-list style="max-width:100px">
-                  <q-item
-                    clickable
-                    v-close-popup
-                    @click="setTheme('naisuTheme')"
-                  >
-                    <q-item-section>
-                      <q-item-label>naisu</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item clickable v-close-popup @click="setTheme('vs')">
-                    <q-item-section>
-                      <q-item-label>vs</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item clickable v-close-popup @click="setTheme('vs-dark')">
-                    <q-item-section>
-                      <q-item-label>vs-dark</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item clickable v-close-popup @click="setTheme('hc-black')">
-                    <q-item-section>
-                      <q-item-label>hc-black</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-menu>
-            </q-btn>
+          <q-btn flat icon="light_mode" style="color:">
+            <q-menu transition-show="jump-down" transition-hide="jump-up">
+              <q-list style="max-width:100px;">
+                <q-item
+                  style="display:grid; place-items:center;width: 100px;"
+                  clickable
+                  v-close-popup
+                  @click="setTheme('naisuTheme')"
+                >
+                  <q-item-label>naisu</q-item-label>
+                </q-item>
+                <q-item
+                  style="display:grid; place-items:center;width: 100px;"
+                  clickable
+                  v-close-popup
+                  @click="setTheme('vs')"
+                >
+                  <q-item-label>vs</q-item-label>
+                </q-item>
+                <q-item
+                  style="display:grid; place-items:center;width: 100px;"
+                  clickable
+                  v-close-popup
+                  @click="setTheme('vs-dark')"
+                >
+                  <q-item-label>vs-dark</q-item-label>
+                </q-item>
+                <q-item
+                  style="display:grid; place-items:center;width: 100px;"
+                  clickable
+                  v-close-popup
+                  @click="setTheme('hc-black')"
+                >
+                  <q-item-label>hc-black</q-item-label>
+                </q-item>
+              </q-list>
+            </q-menu>
+          </q-btn>
 
-            <q-btn>
-              <img :src="langLogos[selectedLang]" style="width:50px" />
-              <q-menu transition-show="jump-down" transition-hide="jump-up">
-                <q-list style="max-width:100px">
-                  <q-item clickable v-close-popup @click="changeLang('cpp')">
-                    <q-item-section>
-                      <img src="../assets/cpp.svg" style="width:50px" />
-                    </q-item-section>
-                  </q-item>
-
-                  <q-item clickable v-close-popup @click="changeLang('c')">
-                    <q-item-section>
-                      <img src="../assets/c.svg" style="width:50px" />
-                    </q-item-section>
-                  </q-item>
-
-                  <q-item clickable v-close-popup @click="changeLang('js')">
-                    <q-item-section>
-                      <img src="../assets/javascript.svg" style="width:50px" />
-                    </q-item-section>
-                  </q-item>
-
-                  <q-item clickable v-close-popup @click="changeLang('python')">
-                    <q-item-section>
-                      <img src="../assets/python.svg" style="width:50px" />
-                    </q-item-section>
-                  </q-item>
-
-                  <q-item clickable v-close-popup @click="changeLang('java')">
-                    <q-item-section>
-                      <img src="../assets/java.svg" style="width:50px" />
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-menu>
-            </q-btn>
-          </div>
-          <div style="position:relative">
+          <q-btn flat>
+            <img :src="langLogos[selectedLang]" style="width:50px" />
+            <q-menu transition-show="jump-down" transition-hide="jump-up">
+              <q-list>
+                <q-item
+                  style="width: max-content;"
+                  clickable
+                  v-close-popup
+                  @click="changeLang('cpp')"
+                >
+                  <img src="../assets/cpp.svg" style="width:50px" />
+                </q-item>
+                <q-item
+                  style="width: max-content;"
+                  clickable
+                  v-close-popup
+                  @click="changeLang('c')"
+                >
+                  <img src="../assets/c.svg" style="width:50px" />
+                </q-item>
+                <q-item
+                  style="width: max-content;"
+                  clickable
+                  v-close-popup
+                  @click="changeLang('js')"
+                >
+                  <img src="../assets/javascript.svg" style="width:50px" />
+                </q-item>
+                <q-item
+                  style="width: max-content;"
+                  clickable
+                  v-close-popup
+                  @click="changeLang('python')"
+                >
+                  <img src="../assets/python.svg" style="width:50px" />
+                </q-item>
+                <q-item
+                  style="width: max-content;"
+                  clickable
+                  v-close-popup
+                  @click="changeLang('java')"
+                >
+                  <img src="../assets/java.svg" style="width:50px" />
+                </q-item>
+              </q-list>
+            </q-menu>
+          </q-btn>
+        </div>
+        <div ref="editors" class="editors">
+          <div :style="`position:relative; height:${editorHeight}px`">
             <transition name="blur-fade">
               <div class="loading" v-if="isLoading">
                 <q-spinner-tail color="primary" size="5em" />
@@ -145,7 +169,6 @@
             <CustomEditor
               header-name="editor.exe"
               v-model="code"
-              height="450px"
               :theme="selectedTheme"
               :language="selectedLang"
               :key="questionNum"
@@ -190,22 +213,16 @@
                 icon="drag_indicator"
               />
             </template> -->
-          <div style="position:relative">
-            <transition name="blur-fade">
-              <div class="loading" v-if="isLoading">
-                <q-spinner-tail color="primary" size="5em" />
-                <q-tooltip :offset="[0, 8]">compiling...</q-tooltip>
-              </div>
-            </transition>
-            <CustomEditor
+          <div>
+            <console
               header-name="console.exe"
+              style="position:absolute;width:100%; bottom:0px"
               :key="output"
               v-model="output"
               height="200px"
-              readOnly
               :theme="selectedTheme"
-              :language="selectedLang"
               :headerColor="output.length >= 1 ? 'green' : 'red'"
+              @expanded="handleConsoleExpansion"
             />
             <!-- <div class="console-header">Console</div> -->
             <!-- <div class="monaco-container">
@@ -249,12 +266,14 @@ import pythonLogo from "../assets/python.svg";
 import questions from "../questions";
 
 import CustomEditor from "../components/CustomEditor.vue";
+import Console from "../components/Console.vue";
 import QuestionStats from "../components/QuestionStats.vue";
 import Example from "../components/Example.vue";
 
 export default {
   components: {
     CustomEditor,
+    Console,
     QuestionStats,
     Example
     // MonacoEditor
@@ -270,19 +289,21 @@ export default {
         js: jsLogo
       },
       questions: questions,
-      questionNum: 5,
+      questionNum: 6,
       splitterModelX: 50,
       splitterModelY: 70,
       editors: [],
       code: "",
       langOptions: ["c", "cpp", "python", "java", "javascript"],
-      selectedLang: "c",
+      selectedLang: "cpp",
 
       themeOptions: ["vs", "vs-dark", "hc-black"],
       selectedTheme: "hc-black",
 
       isLoading: false,
       output: "",
+
+      editorHeight: 550,
 
       thumbStyle: {
         right: "4px",
@@ -329,11 +350,23 @@ export default {
       this.selectedLang = lang;
     },
     changeQuestion(val) {
+      //test bounds before changing
       if (val == 1) {
-        this.questionNum++;
+        if (this.questionNum >= this.questions.length - 1) {
+          this.$q.notify({
+            message:
+              "<div style='font-size:20px'>thats it for now!<span style='font-size:35px'> 😗</span></div>",
+            position: "top",
+            color: "info",
+            html: true
+          });
+          return;
+        } else this.questionNum++;
       } else {
+        if (this.questionNum == 0) return;
         this.questionNum--;
       }
+      //update souce code according ot questionNum
       if (this.questions[this.questionNum].hint)
         this.code = this.questions[this.questionNum].hint;
     },
@@ -360,18 +393,29 @@ export default {
         .then(res => {
           // this.output = res.data.stdout || res.data.stderr || "";
           this.output = JSON.stringify(res.data);
-          this.output = `tests passed: ${res.data.passedCount}/${res.data.totalCount}\n`
-          let testCases = res.data.tests
-          testCases.forEach((test,index)=>{
-            this.output += `test #${index+1}\ninput : ${test.input}\nexpected\noutput: ${test.expout}
-output: ${test.stdout}\n${test.passed? 'Passed ✅':'Failed ❌'}\n\n`
-          })
+          // console.log(this.output)
           this.isLoading = false;
+          this.handleConsoleExpansion(true);
+
+          if (res.data.error) {
+            this.output = `error: ${res.data.error}`;
+            return;
+          }
+          this.output = `tests passed: ${res.data.passedCount}/${res.data.totalCount}\n`;
+          let testCases = res.data.tests;
           console.log(testCases);
+          if (!testCases) return;
+          testCases.forEach((test, index) => {
+            this.output += `test #${index + 1}\ninput : ${
+              test.input
+            }\nexpected\noutput: ${test.expout}
+output: ${test.stdout}\n${test.passed ? "Passed ✅" : "Failed ❌"}\n\n`;
+          });
         });
-      this.updateConsole();
     },
-    updateConsole() {}
+    handleConsoleExpansion(isExpanded) {
+      this.editorHeight = isExpanded ? 550 : 750;
+    }
   }
 };
 </script>
@@ -393,13 +437,8 @@ output: ${test.stdout}\n${test.passed? 'Passed ✅':'Failed ❌'}\n\n`
 .left-section {
   padding: 20px;
 }
-
-.console {
-  border-radius: 0px 0px 10px 10px;
-}
-.options {
-  display: flex;
-  flex-direction: row;
+.editors {
+  height: 90%;
 }
 .monaco-container {
   /* background: linear-gradient(140deg, rgb(76, 200, 200), rgb(32, 32, 51)); */
@@ -487,6 +526,10 @@ output: ${test.stdout}\n${test.passed? 'Passed ✅':'Failed ❌'}\n\n`
   box-shadow: -5px 7px 0px 1px rgba(0, 0, 0, 1);
   -webkit-box-shadow: -5px 7px 0px 1px rgba(0, 0, 0, 1);
   -moz-box-shadow: -5px 7px 0px 1px rgba(0, 0, 0, 1);
+}
+.q-menu{
+  background: rgba(252, 0, 0, 0.596);
+  backdrop-filter: blur(4px);
 }
 .loading {
   background: rgba(255, 255, 255, 0.05);

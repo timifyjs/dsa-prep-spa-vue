@@ -5,8 +5,8 @@
       <div style="padding-left:20px">{{ testCase.inputFront }}</div>
       <div>Output:</div>
       <div style="padding-left:20px">{{ testCase.output }}</div>
-      <div v-if="testCase.explaination">Explaination:</div>
-      <div style="padding-left:20px">{{ testCase.explaination }}</div>
+      <div v-if="testCase.explanation">Explaination:</div>
+      <div style="padding-left:20px">{{ testCase.explanation }}</div>
     </div>
   </div>
 </template>
