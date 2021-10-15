@@ -217,9 +217,10 @@
             <console
               header-name="console.exe"
               style="position:absolute;width:100%; bottom:0px"
-              :key="output"
-              v-model="output"
               height="200px"
+              v-model="output"
+              :consoleExpanded="consoleExpanded"
+              :key="output"
               :theme="selectedTheme"
               :headerColor="output.length >= 1 ? 'green' : 'red'"
               @expanded="handleConsoleExpansion"
@@ -303,7 +304,8 @@ export default {
       isLoading: false,
       output: "",
 
-      editorHeight: 550,
+      editorHeight: 750,
+      consoleExpanded:false,
 
       thumbStyle: {
         right: "4px",
@@ -414,6 +416,7 @@ output: ${test.stdout}\n${test.passed ? "Passed ✅" : "Failed ❌"}\n\n`;
         });
     },
     handleConsoleExpansion(isExpanded) {
+      this.consoleExpanded = isExpanded
       this.editorHeight = isExpanded ? 550 : 750;
     }
   }

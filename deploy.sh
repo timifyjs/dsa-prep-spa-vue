@@ -11,6 +11,6 @@ git status
 git add .
 
 git status
-git commit -m 'Basic validation'
+git commit -m 'Fix console exanpansion issue'
 #git pull origin gh-pages --allow-unrelated-histories
 git push origin gh-pages --force

@@ -22,7 +22,7 @@
         </div>
       </div>
     </div>
-    <q-slide-transition :duration='200' appear >
+    <q-slide-transition :duration="200" appear>
       <div v-show="consoleExpanded">
         <MonacoEditor
           class="editor"
@@ -53,6 +53,11 @@ export default {
     value: {
       type: String,
       required: true
+    },
+    consoleExpanded: {
+      type: Boolean,
+      required: true,
+      default: false
     },
     headerName: {
       type: String,
@@ -85,7 +90,7 @@ export default {
       cCode: "",
       cHeight: null,
       editor: null,
-      consoleExpanded: true
+      cConsoleExpanded: false
     };
   },
   mounted() {
@@ -121,13 +126,13 @@ export default {
       monaco.editor.setTheme("naisuTheme");
     },
     handleExpandBtn() {
-      this.consoleExpanded = !this.consoleExpanded;
-      if (this.consoleExpanded) {
+      this.cConsoleExpanded = !this.cConsoleExpanded;
+      this.$emit("expanded", this.cConsoleExpanded);
+      console.log(this.cConsoleExpanded, this.consoleExpanded)
+      if (this.cConsoleExpanded) {
         this.cHeight = 200;
-        this.$emit("expanded", true);
       } else {
         this.cHeight = 0;
-        this.$emit("expanded", false);
       }
     }
   }
