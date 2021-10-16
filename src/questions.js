@@ -387,6 +387,69 @@ int main(void){
         },
         ]
     },
+    {
+        num: 8,
+        title: 'Merge Intervals',
+        desc: `Given an array of intervals where intervals[i] = [starti, endi], 
+        merge all overlapping intervals, and return an array of the non-overlapping
+        intervals that cover all the intervals in the input.`,
+        diffLevel: 'Medium',
+        hint: `#include <stdio.h>
+int main(void){
+   //Your code here
+    return 0;
+}`,
+        testCases: [{
+            inputFront: 'N = 4, intervals = [[1,3],[2,6],[8,10],[15,18]]',
+            input: '4 1 3 2 6 8 10 15 18',
+            output: '[[1,6],[8,10],[15,18]]',
+            explanation: `Since intervals [1,3] and [2,6] overlaps, merge them into [1,6].`,
+            hidden: false
+        },
+        {
+            inputFront: 'N = 2, intervals = [[1,4],[4,5]]',
+            input: '2 1 4 4 5',
+            output: '[[1,5]]',
+            explanation: `Intervals [1,4] and [4,5] are considered overlapping.`,
+            hidden: false
+        },
+        ]
+    },
+    {
+        num: 9,
+        title: 'Minimize the Heights II',
+        desc: `Given an array arr[] denoting heights of N towers and a positive integer K, 
+        you have to modify the height of each tower either by increasing or decreasing them 
+        by K only once. After modifying, height should be a non-negative integer. 
+        Find out what could be the possible minimum difference of the height of shortest and 
+        longest towers after you have modified each tower.`,
+        diffLevel: 'Medium',
+        hint: `#include <stdio.h>
+int main(void){
+   //Your code here
+    return 0;
+}`,
+        testCases: [{
+            inputFront: 'K = 2, N = 4, Arr[] = {1, 5, 8, 10}',
+            input: '2 4 1 5 8 10',
+            output: '5',
+            explanation: `The array can be modified as 
+            {3, 3, 6, 8}. The difference between 
+            the largest and the smallest is 8-3 = 5.`,
+            hidden: false
+        },
+        {
+            inputFront: 'K = 3, N = 5, Arr[] = {3, 9, 12, 16, 20}',
+            input: '3 5 3 9 13 16 20',
+            output: '11',
+            explanation: `The array can be modified as
+            {6, 12, 9, 13, 17}. The difference between 
+            the largest and the smallest is 17-6 = 11.`,
+            hidden: false
+        },
+        ]
+    },
+
 
 
 
