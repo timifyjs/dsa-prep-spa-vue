@@ -449,7 +449,161 @@ int main(void){
         },
         ]
     },
+    {
+        num: 10,
+        title: 'Trailing zeroes in factorial',
+        desc: `Given a number N, you have to calculate the number of trailing zeroes in its 
+        factorial`,
+        diffLevel: 'ez',
+        hint: `#include <stdio.h>
+int main(void){
+   //Your code here
+    return 0;
+}`,
+        testCases: [{
+            inputFront: 'N = 5',
+            input: '5',
+            output: '1',
+            explanation: `5! = 120, number of zeroes in 120 is 1`,
+            hidden: false
+        },
+        {
+            inputFront: 'N = 10',
+            input: '10',
+            output: '2',
+            explanation: `10! = 3628800, number of zeroes in 3628800 are 2`,
+            hidden: false
+        },
+        ]
+    },
+    {
+        num: 11,
+        title: 'GCD',
+        desc: `Given 2 number a and b, you have to calculate their greatest
+        common divisor(GCD) efficiently`,
+        diffLevel: 'ez',
+        hint: `#include <bits/stdc++.h>
+using namespace std;
 
+int gcd(int a, int b){
+return a == 0 ? b : gcd(b % a, a);
+}
+int main()
+{
+    int a = 12;
+    int b = 46;
+
+    cout << gcd(a, b);
+
+    return 0;
+}`,
+        testCases: [{
+            inputFront: 'a = 12, b = 42',
+            input: '12 42',
+            output: '2',
+            explanation: `gcd(12, 42) is 2`,
+            hidden: false
+        },
+        {
+            inputFront: 'a = 36, b = 18',
+            input: '36 18',
+            output: '6',
+            explanation: `gcd(36, 18) is 6`,
+            hidden: false
+        },
+        ]
+    },
+    {
+        num: 11,
+        title: 'Palindrom',
+        desc: `Given a number N, you have to check whether it is palindrom`,
+        diffLevel: 'ez',
+        hint: `#include <iostream>
+
+using namespace std;
+int main() {
+    //code
+    int num = 10120;
+    int temp = num;
+    int rev = 0;
+    while(temp>0){
+        // if(temp == num && temp % 10 == 0){
+        //     temp /= 10; 
+        //     continue;
+        // }
+        rev = rev * 10 + (temp%10);
+        temp /= 10;
+        cout<<temp<<" "<<rev<<endl;
+    }
+    cout<<num==rev;
+    
+    return 1;
+}`,
+        testCases: [{
+            inputFront: 'N = 1221',
+            input: '1221',
+            output: 'true',
+            explanation: `1221 when reversed is also 1221`,
+            hidden: false
+        },
+        {
+            inputFront: 'N = 341',
+            input: '341',
+            output: 'false',
+            explanation: `341 when reversed is 143 which is not same`,
+            hidden: false
+        },
+        ]
+    },
+    {
+        num: 11,
+        title: 'Sieve of Eratosthenes',
+        desc: `Given a number N, print all primes smaller than or equal to N.
+        It is also given that N is a small number.`,
+        diffLevel: 'ez',
+        hint: `#include<iostream>
+#include<math.h>
+
+using namespace std;
+
+void display(bool arr[], int n){
+    cout<<"-----------\n";
+    for(int i=0; i<n; i++){
+        cout<<i<<". "<<arr[i]<<"\n";
+    }
+    cout<<"-----------\n";
+}
+int main(){
+
+    int n;
+    bool arr[n];
+
+    cin>>n;
+    for(int i=0; i<n; i++){
+        arr[i] = true;
+    }
+    for(int i=2;  i<pow(n,0.5); i++){
+        for(int j=i*2; j<n; j+=i){
+            arr[j] = false;
+        }
+    }
+    display(arr, n);
+    return 0;
+}`,
+        testCases: [{
+            inputFront: 'N = 10',
+            input: '10',
+            output: '2 3 5 7',
+            hidden: false
+        },
+        {
+            inputFront: 'N = 20',
+            input: '20',
+            output: '2 3 5 7 11 13 17 19',
+            hidden: false
+        },
+        ]
+    },
 
 
 
