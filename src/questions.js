@@ -514,7 +514,7 @@ int main()
         ]
     },
     {
-        num: 11,
+        num: 12,
         title: 'Palindrom',
         desc: `Given a number N, you have to check whether it is palindrom`,
         diffLevel: 'ez',
@@ -556,7 +556,7 @@ int main() {
         ]
     },
     {
-        num: 11,
+        num: 13,
         title: 'Sieve of Eratosthenes',
         desc: `Given a number N, print all primes smaller than or equal to N.
         It is also given that N is a small number.`,
@@ -600,6 +600,44 @@ int main(){
             inputFront: 'N = 20',
             input: '20',
             output: '2 3 5 7 11 13 17 19',
+            hidden: false
+        },
+        ]
+    },
+    {
+        num: 13,
+        title: 'String permutation',
+        desc: `Given a string str, print its all permutations possible`,
+        diffLevel: 'medium',
+        hint: `#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+void permutation(string str, int i, string curr){
+    if (i == str.length()){
+        cout << curr << endl;
+        return;
+    }
+    permutation(str, i+1, curr);
+}
+
+int main()
+{
+    permutation("abc", 0, "");
+
+    return 0;
+}`,
+        testCases: [{
+            inputFront: 'str = ab',
+            input: 'ab',
+            output: 'ab ba',
+            hidden: false
+        },
+        {
+            inputFront: 'str = abc',
+            input: 'abc',
+            output: 'abc acb bac bca cab cba',
             hidden: false
         },
         ]
