@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="layout">
     <q-header style="height:80px">
-      <q-toolbar>
+      <q-toolbar class="flex justify-between">
         <!-- <q-btn
           flat
           dense
@@ -12,10 +12,16 @@
         /> -->
 
         <q-toolbar-title>
-          Dan is pro online editor for beginner programmers to get into dsa 😤👌
+        <div class="text-h4 text-bold">
+            Coding playground 😤👌
+          </div>
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div v-if="$route.path === '/'">
+          <router-link to="/playground" style="text-decoration:none; color:white">
+            <q-btn label="Playground" icon="code" />
+          </router-link>
+        </div>
       </q-toolbar>
     </q-header>
 
