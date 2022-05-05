@@ -386,8 +386,8 @@ export default {
       this.output = "";
       this.isLoading = true;
       axios
-        // .post("https://compiler.plasmatch.in/", {
-        .post("http://localhost:3333/", {
+        .post("https://compiler.panipuri.tech/", {
+        //.post("http://localhost:3333/", {
           code: this.code,
           lang: this.selectedLang,
           qNo: this.questionNum
